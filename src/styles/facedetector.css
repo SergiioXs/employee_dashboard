@@ -1,0 +1,112 @@
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    min-height: 350px;
+    /*margin: 0 auto 20px;*/
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.facedetector-video,
+.facedetector-canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.facedetector-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+
+
+/* FaceDetection.css */
+.loading-screen {
+    z-index: 1000;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    background: linear-gradient(135deg, #000000bd 0%, #357af3d4 100%);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.loading-content {
+    text-align: center;
+    color: white;
+    max-width: 300px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    margin: 0 auto 1.5rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 1rem 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: white;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.error-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.error-content {
+    text-align: center;
+    color: white;
+    max-width: 400px;
+}
+
+.retry-btn {
+    background: white;
+    color: #f5576c;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: transform 0.2s ease;
+}
+
+.retry-btn:hover {
+    transform: translateY(-2px);
+}

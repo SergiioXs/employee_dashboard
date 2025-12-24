@@ -3,10 +3,30 @@ import { FaBars, FaBell, FaSignInAlt, FaSignOutAlt, FaQrcode } from 'react-icons
 import QRScannerModal from './QRScannerModal';
 import StatusBadge from './StatusBadge';
 import '../styles/header.css';
+import { httpPost } from '../services/http';
 
-const Header = ({ onMenuClick, onCheckIn, isCheckedIn, checkinTime }) => {
+const Header = ({ onMenuClick }) => {
     const [notificationCount, setNotificationCount] = useState(5);
     const [showQRScanner, setShowQRScanner] = useState(false);
+    const [isCheckedIn, setIsCheckedIn] = useState(false);
+    const [checkinTime, setCheckinTime] = useState(null);
+    const [checkinHistory, setCheckinHistory] = useState([]);
+
+    const getFormattedDateTime = () => {
+        const now = new Date(); // Gets the current date and time
+
+        // Helper function to add leading zeros to single digits
+        const pad = (num) => num.toString().padStart(2, '0');
+
+        const year = now.getFullYear();
+        const month = pad(now.getMonth() + 1); // Months are 0-indexed
+        const day = pad(now.getDate());
+        const hours = pad(now.getHours());
+        const minutes = pad(now.getMinutes());
+        const seconds = pad(now.getSeconds());
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    };
 
     const handleNotificationClick = () => {
         setNotificationCount(0);
@@ -18,7 +38,7 @@ const Header = ({ onMenuClick, onCheckIn, isCheckedIn, checkinTime }) => {
             setShowQRScanner(true);
         } else {
             // Direct check-out
-            onCheckIn();
+            handleCheckIn();
         }
     };
 
@@ -42,7 +62,7 @@ const Header = ({ onMenuClick, onCheckIn, isCheckedIn, checkinTime }) => {
 
                 // Trigger check-in
                 setTimeout(() => {
-                    onCheckIn(qrData); // Pass QR data to check-in
+                    handleCheckIn(qrData); // Pass QR data to check-in
                     showNotification('QR scanned successfully! Checked in.', 'success');
                 }, 500);
             } else {
@@ -58,6 +78,94 @@ const Header = ({ onMenuClick, onCheckIn, isCheckedIn, checkinTime }) => {
         console.error('QR Scan Error:', error);
         showNotification('Scanner error. Please try again.', 'error');
     };
+
+    const handleCheckIn = async (qrData = null) => {
+        if (!isCheckedIn) {
+            // Check in
+            const now = new Date();
+            setIsCheckedIn(true);
+            setCheckinTime(now);
+
+            // Add to history
+            const checkinRecord = {
+                type: 'checkin',
+                time: getFormattedDateTime(),
+                location: qrData?.location || 'Office',
+                method: qrData ? 'QR Code' : 'Manual'
+            };
+
+            const check = {
+                numero_empleado: qrData.numero_empleado || "1992115",
+                nombre: qrData.nombre || "Sergio Cruz",
+                id_apuntador: qrData.id_apuntador || "1",
+                datetime: getFormattedDateTime(),
+                event_type: "Entrada",
+                datetime_out: null,
+                lat_entrada: qrData.lat_e || "19.427126",
+                long_entrada: qrData.long_e || "-99.167222",
+                lat_salida: qrData.lat_s || "19.427126",
+                long_salida: qrData.long_s || "-99.167222",
+            };
+
+            const response = await httpPost('registroAsistencia.php', check);
+            console.log(response);
+
+            setCheckinHistory(prev => [checkinRecord, ...prev]);
+            showNotification(`Haz check-in a las ${now.toLocaleTimeString()}`, 'success');
+
+
+            // You would typically send this to your backend
+            console.log('Check-in recorded:', checkinRecord);
+
+            /*
+            setCheckinHistory(prev => [checkinRecord, ...prev]);
+            showNotification(`Successfully checked in at ${now.toLocaleTimeString()}`, 'success');
+
+            // You would typically send this to your backend
+            console.log('Check-in recorded:', checkinRecord);
+            */
+        } else {
+            // Check out
+            const checkoutTime = new Date();
+            const hoursWorked = checkinTime
+                ? ((checkoutTime - checkinTime) / (1000 * 60 * 60)).toFixed(2)
+                : 0;
+
+            const check = {
+                numero_empleado: "1992115",
+                nombre: "Sergio Cruz",
+                id_apuntador: "1",
+                event_type: "Salida",
+                datetime: getFormattedDateTime(),
+                datetime_out: null,
+                lat_entrada: "19.427126",
+                long_entrada: "-99.167222",
+            };
+
+            const response = await httpPost('registroAsistencia.php', check);
+            console.log(response);
+
+            setIsCheckedIn(false);
+
+            // Add checkout to history
+            const checkoutRecord = {
+                type: 'checkout',
+                time: checkoutTime,
+                hoursWorked: hoursWorked
+            };
+
+            setCheckinHistory(prev => [checkoutRecord, ...prev]);
+            showNotification(`Haz checado salida, ${hoursWorked} horas trabajadas.`, 'info');
+
+
+            // You would typically send this to your backend
+            console.log('Check-out recorded:', checkoutRecord);
+        }
+    };
+
+
+
+
 
     const validateQRCode = (qrData) => {
         // Implement your QR validation logic here

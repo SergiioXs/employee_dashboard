@@ -1,0 +1,137 @@
+.login-container {
+    display: flex;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.login-form {
+    padding: 80px;
+}
+
+.logo {
+    width: 50%;
+    max-width: 500px;
+    display: none;
+}
+
+.forgot-option {
+    margin-top: 30px;
+    font-size: 14px;
+}
+
+/* IZQUIERDA */
+.login-form-section {
+    display: flex;
+    width: 50%;
+    /* padding: 80px; */
+    background: #ffffff;
+    align-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form-section h1 {
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #6b7280;
+    margin-bottom: 32px;
+}
+
+.login-form-section label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.login-form-section input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.forgot {
+    color: #3b82f6;
+    cursor: pointer;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background: #4f67ff;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background: #9ca3af;
+}
+
+.error {
+    color: #dc2626;
+    margin-bottom: 12px;
+}
+
+/* DERECHA */
+.login-brand-section {
+    width: 50%;
+    background: linear-gradient(135deg, #00aff3, #006b95);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-brand-section h2 {
+    font-size: 48px;
+}
+
+.login-brand-section p {
+    opacity: 0.8;
+}
+
+
+@media (max-width: 1300px) {
+    .logo {
+        display: block;
+        min-width: 450px;
+    }
+
+    .login-form {
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+    }
+
+    .login-container {
+        /*flex-direction: column;*/
+    }
+
+    .login-brand-section {
+        display: none;
+    }
+
+    .login-form-section {
+        padding: 20px;
+        flex-direction: column;
+        background: linear-gradient(135deg, #00aff3, #006b95);
+        width: 100%;
+        justify-content: start;
+    }
+}

@@ -4,9 +4,9 @@ import {
     FaInfoCircle, FaCalendar, FaGift,
     FaUser, FaUsers, FaChartLine, FaLightbulb
 } from 'react-icons/fa';
-import Card from './Card';
-import ListItem from './ListItem';
-import '../styles/dashboard.css';
+import Card from '../../components/Card';
+import ListItem from '../../components/ListItem';
+import './Dashboard.css';
 
 const DashboardGrid = ({ onMessageRead }) => {
     const [announcements, setAnnouncements] = useState([

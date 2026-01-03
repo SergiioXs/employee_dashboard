@@ -4,7 +4,7 @@ import { clearSession } from '../services/session';
 import {
     FaBriefcase, FaHome, FaCalendarAlt, FaBullhorn,
     FaComments, FaClock, FaUmbrellaBeach, FaFileSignature,
-    FaCreditCard, FaGift, FaCalendarDay, FaUser, FaSignOutAlt
+    FaStore, FaCreditCard, FaGift, FaCalendarDay, FaUser, FaSignOutAlt
 } from 'react-icons/fa';
 import StatusBadge from './StatusBadge';
 import '../styles/sidebar.css';
@@ -12,19 +12,21 @@ import logo from '../assets/logo_blanco.png';
 
 /* PAGES */
 import Attendance from '../pages/Attendance/Attendance';
+import Stores from '../pages/Stores/Stores';
 
 const navItems = [
     { id: 1, icon: <FaHome />, label: 'Dashboard', active: true, route: '/' },
-    { id: 2, icon: <FaCalendarAlt />, label: 'Reuniones' },
-    { id: 3, icon: <FaBullhorn />, label: 'Anuncios' },
-    { id: 4, icon: <FaComments />, label: 'Mensajes', badge: 3, badgeType: 'danger' },
-    { id: 5, icon: <FaClock />, label: 'Checadas', route: '/attendance' },
-    { id: 6, icon: <FaUmbrellaBeach />, label: 'Vacaciones' },
-    { id: 7, icon: <FaFileSignature />, label: 'Permisos' },
-    { id: 8, icon: <FaCreditCard />, label: 'Pagos' },
-    { id: 9, icon: <FaGift />, label: 'Beneficios' },
-    { id: 10, icon: <FaCalendarDay />, label: 'Eventos' },
-    { id: 11, icon: <FaSignOutAlt />, label: 'Cerrar Sesión' },
+    { id: 2, icon: <FaStore />, label: 'Sucursales', route: '/stores' },
+    { id: 3, icon: <FaCalendarAlt />, label: 'Reuniones' },
+    { id: 4, icon: <FaBullhorn />, label: 'Anuncios' },
+    { id: 5, icon: <FaComments />, label: 'Mensajes', badge: 3, badgeType: 'danger' },
+    { id: 6, icon: <FaClock />, label: 'Checadas', route: '/attendance' },
+    { id: 7, icon: <FaUmbrellaBeach />, label: 'Vacaciones' },
+    { id: 8, icon: <FaFileSignature />, label: 'Permisos' },
+    { id: 9, icon: <FaCreditCard />, label: 'Pagos' },
+    { id: 10, icon: <FaGift />, label: 'Beneficios' },
+    { id: 11, icon: <FaCalendarDay />, label: 'Eventos' },
+    { id: 12, icon: <FaSignOutAlt />, label: 'Cerrar Sesión' },
 ];
 
 const Sidebar = ({ isMobileOpen, onClose }) => {

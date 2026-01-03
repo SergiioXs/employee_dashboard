@@ -67,7 +67,7 @@
     cursor: pointer;
 }
 
-button {
+.login-button {
     width: 100%;
     padding: 14px;
     background: #4f67ff;

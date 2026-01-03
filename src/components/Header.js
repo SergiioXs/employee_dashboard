@@ -1,16 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaBars, FaBell, FaSignInAlt, FaSignOutAlt, FaQrcode } from 'react-icons/fa';
 import QRScannerModal from './QRScannerModal';
 import StatusBadge from './StatusBadge';
 import '../styles/header.css';
 import { httpPost } from '../services/http';
+import { getCurrentLocation } from "../services/geolocation";
+import { useHeader } from '../context/HeaderContext';
 
 const Header = ({ onMenuClick }) => {
+    const { title, description, setTitle, setDescription } = useHeader();
     const [notificationCount, setNotificationCount] = useState(5);
     const [showQRScanner, setShowQRScanner] = useState(false);
     const [isCheckedIn, setIsCheckedIn] = useState(false);
     const [checkinTime, setCheckinTime] = useState(null);
     const [checkinHistory, setCheckinHistory] = useState([]);
+    const [checkParamValue, setCheckParamValue] = useState(null);
+
+    // Función para obtener parámetros de la URL
+    const getUrlParam = (param) => {
+        if (typeof window === 'undefined') return null;
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    };
+
+    // Efecto para verificar parámetro check al cargar
+    useEffect(() => {
+
+        setTitle("Dashboard");
+        setDescription("Bienvenido al sistema");
+
+        const checkParam = getUrlParam('check');
+        if (checkParam) {
+            console.log(`✅ Parámetro "check" detectado: ${checkParam}`);
+            setCheckParamValue(checkParam);
+
+            // Abrir automáticamente el modal del scanner después de un breve delay
+            // Esto permite que la UI se cargue completamente primero
+            const timer = setTimeout(() => {
+                console.log('🔓 Abriendo modal QR automáticamente...');
+                handleCheckInClick();
+            }, 500); // 500ms delay para asegurar que todo esté cargado
+
+            return () => clearTimeout(timer);
+        }
+    }, []);
 
     const getFormattedDateTime = () => {
         const now = new Date(); // Gets the current date and time
@@ -32,7 +65,15 @@ const Header = ({ onMenuClick }) => {
         setNotificationCount(0);
     };
 
-    const handleCheckInClick = () => {
+    const handleCheckInClick = async () => {
+        const currentLocation = await getCurrentLocation();
+
+
+        if (!currentLocation.status) {
+            showNotification(currentLocation.message, 'error');
+            return;
+        }
+        console.log(currentLocation);
         if (!isCheckedIn) {
             // Show QR scanner modal for check-in
             setShowQRScanner(true);
@@ -218,8 +259,8 @@ const Header = ({ onMenuClick }) => {
         <>
             <header className="header">
                 <div className="page-title">
-                    <h1>Mi Dashboard</h1>
-                    <p>Bienvenido Sergio Antonio! Aquí está lo que está sucediendo hoy.</p>
+                    <h1>{title}</h1>
+                    <p>{description}</p>
                 </div>
 
                 <div className="header-actions">

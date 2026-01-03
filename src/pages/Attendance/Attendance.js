@@ -1,5 +1,22 @@
+
+import { useHeader } from '../../context/HeaderContext';
+import { useEffect } from 'react';
+
+
 const Attendance = () => {
-    return <h1>Checadas</h1>;
+    const { setTitle, setDescription } = useHeader();
+
+    useEffect(() => {
+        setTitle("Checadas");
+        setDescription("Administra y configura tus checadas");
+    }, []);
+
+
+    return (
+        <>
+            <h1>-</h1>
+        </>
+    );
 };
 
 export default Attendance;

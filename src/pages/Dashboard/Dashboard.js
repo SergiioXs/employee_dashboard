@@ -14,8 +14,11 @@ import {
 import Card from '../../components/Card';
 import ListItem from '../../components/ListItem';
 
+import { useHeader } from '../../context/HeaderContext';
+
 import QRScannerModal from '../../components/QRScannerModal';
 const Dashboard = () => {
+    const { setTitle, setDescription } = useHeader();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isCheckedIn, setIsCheckedIn] = useState(false);
     const [checkinTime, setCheckinTime] = useState(null);
@@ -153,11 +156,15 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
+        setTitle("Dashboard");
+        setDescription("Bienvenido al sistema");
+
         updateMeetingStatuses();
         const interval = setInterval(updateMeetingStatuses, 60000);
         return () => clearInterval(interval);
     }, []);
 
+    /*
     // Función para obtener parámetros de la URL
     const getUrlParam = (param) => {
         if (typeof window === 'undefined') return null;
@@ -182,6 +189,7 @@ const Dashboard = () => {
             return () => clearTimeout(timer);
         }
     }, []);
+    */
 
     // Función para escanear QR cuando viene con parámetro check
     const handleQRScanWithCheck = (result) => {
